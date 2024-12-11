@@ -11,4 +11,5 @@ void screen_init();
 
 void update_heart();
 
+void update_dot();
 #endif

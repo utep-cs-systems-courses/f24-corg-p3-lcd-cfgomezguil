@@ -3,13 +3,10 @@
 #include "lcddraw.h"
 #include "menu.h"
 
-
 // Size 1: 50, 30
 // Size 2: 25, 20
 // Size 3: 40, 25
 
-static u_char dot_col = 1;   // Starting column of the dot
-static const u_char dot_row = 10; // Fixed row for the dot
 static char size_states[] = {'B', 'M', 'S'};
 static u_char size_index = 0; // Index for the current size state
 
@@ -36,32 +33,35 @@ void update_heart() {
   }
 }
 
-void update_timer_dot() {
-  static u_int timer_count = 0;
-  timer_count++;
 
-  // Update dot position every few timer counts
-  if (timer_count % 10 == 0) {  // Adjust modulus value to control speed
-    // Erase the previous dot by drawing it in the background color
-    drawPixel(dot_col, dot_row, COLOR_WHITE);
+static u_char dot_x = 10; // Initial x-coordinate for the dot
+static u_char dot_y = screenHeight - 19; // Initial y-coordinate for the dot
+static char dx = 1;       // Movement direction along x-axis
+static char dy = 0;       // Movement direction along y-axis
+static u_char prev_x = 10;
+void update_dot() {
 
-    // Move the dot to the next position
-    dot_col++;
+  // Clear the previous dot position
+  fillRectangle(prev_x, dot_y, 2, 2, COLOR_GRAY);
 
-    // If the dot reaches the end, reset it and change the size
-    if (dot_col > 120) {
-      dot_col = 1;
-      size_index = (size_index + 1) % 3; // Cycle through size states
+  // Update coordinates
+  dot_x += dx;
+  dot_y += dy;
 
-      // Update the size indicator
-      size = size_states[size_index];
-
-      // Reflect the new size in the menu
-      update_menu();
-    }
-
-    // Draw the dot in the new position
-    drawPixel(dot_col, dot_row, COLOR_BLACK);
+  // Boundary checking and direction reversal
+  if (dot_x >= screenWidth - 2 || dot_x <= 0) {
+    dx = -dx; // Reverse direction on x-axis
+    dot_x += dx; // Adjust to stay within bounds
   }
+  if (dot_y >= screenHeight - 2 || dot_y <= 0) {
+    dy = -dy; // Reverse direction on y-axis
+    dot_y += dy; // Adjust to stay within bounds
+  }
+
+  // Draw the dot at the new position
+  fillRectangle(dot_x, dot_y, 2, 2, COLOR_BLACK);
+
+  // Store the current position for the next update
+  prev_x = dot_x;
 }
 

@@ -1,6 +1,8 @@
 #include <msp430.h>
 #include "libTimer.h"
 
+volatile unsigned int global_time = 0; // Global time counter
+
 void configureClocks(){
   WDTCTL = WDTPW + WDTHOLD;//Disable Watchdog Timer
   BCSCTL1 = CALBC1_16MHZ;  // Set DCO to 16 Mhz
