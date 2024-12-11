@@ -4,6 +4,7 @@
 
 extern u_int ColorShape;
 extern char  heartState;
+extern char size;
 extern unsigned short ColorOptions[];
 extern const u_int COLOR_OPTIONS_SIZE;
 //Initialize the Menu and place all the values corresponding to the menu

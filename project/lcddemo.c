@@ -11,9 +11,10 @@ int main()
   configureClocks();
   lcd_init();
   switch_init();
-  screen_init();
   menu_init();
-  
+  screen_init();
+  //enableWDTInterrupts();
   or_sr(0x8);
 }
+
 

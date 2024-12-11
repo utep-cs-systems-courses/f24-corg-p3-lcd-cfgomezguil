@@ -13,6 +13,7 @@ unsigned short ColorOptions[] = {COLOR_RED, COLOR_BLUE, COLOR_GREEN, COLOR_MAGEN
 const u_int COLOR_OPTIONS_SIZE = sizeof(ColorOptions) / sizeof(ColorOptions[0]);
 
 void menu_init(){
+  clearScreen(COLOR_WHITE);
   fillRectangle(0, height - 20, width, 20, COLOR_GRAY);
   drawString5x7(1,height - 13, "Current Color: ", COLOR_BLACK, COLOR_GRAY);
   fillRectangle(width - 40, height - 17, 20, 14, ColorShape);
