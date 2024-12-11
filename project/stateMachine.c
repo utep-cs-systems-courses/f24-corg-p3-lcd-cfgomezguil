@@ -9,6 +9,7 @@ void color_state_advance() {
 
 
 void heart_state_advance() {
+  
   // Increment the heartState and wrap around from '3' back to '1'
   heartState = (heartState == '3') ? '1' : (heartState + 1);
   // Update the menu to reflect the new heart state

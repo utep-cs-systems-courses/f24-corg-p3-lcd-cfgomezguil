@@ -41,8 +41,3 @@ void __interrupt_vec(PORT2_VECTOR) Port_2() {
   }
 }                                     
 
-
-//void update_shape()
-//{
-//  screen_update_ball();
-//}
