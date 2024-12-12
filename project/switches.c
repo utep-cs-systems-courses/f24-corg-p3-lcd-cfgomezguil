@@ -22,9 +22,10 @@ void switch_init(){
   P2DIR &= ~SWITCHES; // set switches' bits for input
   switch_update_interrupt_sense();
 }
-void switch_interrupt_handler(){
+
+void switch_interrupt_handler() {
   char p2val = switch_update_interrupt_sense();
-  switches = ~p2val * SWITCHES;
+  switches = ~p2val & SWITCHES; // Update switches state
 
   if (switches & SW1) {
     update_heart();
@@ -34,20 +35,21 @@ void switch_interrupt_handler(){
     color_state_advance();
     buzzer_set_period(900);
   }
-  if(switches & SW3) {
+  if (switches & SW3) {
     heart_state_advance();
     buzzer_set_period(700);
   }
-  if(switches & SW4) {
-    P1OUT &= ~LED;
-    //or_sr(0x10);
-    P1OUT = LED;
+  if (switches & SW4) {
+    // Low-power mode handling moved to interrupt vector
+    P1OUT &= ~LED; // Optional: Turn off LED
   }
 }
-void __interrupt_vec(PORT2_VECTOR) Port_2() {
-  if(P2IFG & SWITCHES) {
-    P2IFG &= ~SWITCHES;
-    switch_interrupt_handler();
-  }
-}                                     
 
+
+void __interrupt_vec(PORT2_VECTOR) Port_2() {
+  if (P2IFG & SWITCHES) {      // Check if interrupt is caused by switches
+    P2IFG &= ~SWITCHES;        // Clear pending interrupts
+    switch_interrupt_handler(); // Handle switch logic
+    _bic_SR_register_on_exit(LPM4_bits); // Exit LPM4 on any switch interrupt
+  }
+}

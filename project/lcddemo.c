@@ -15,8 +15,7 @@ short redrawScreen = 1;
 
 void main()
 {
-  P1DIR |= LED;/**< Green led on when CPU on */
-
+  P1DIR |= LED;/**< Red led on when CPU on */
   P1OUT |= LED;
   configureClocks();
   lcd_init();
@@ -25,17 +24,16 @@ void main()
   screen_init();
   buzzer_init();
   
-  //  enableWDTInterrupts();
+  enableWDTInterrupts();
   or_sr(0x08);
   
   while (1) {
-    if (global_time % 250000 == 0) { // Example: Update dot every 50 ticks
+    if(redrawScreen){
+      redrawScreen = 0;
       update_dot();
     }
-    //P1OUT &= ~LED;/* led off */
-    //or_sr(0x10);/**< CPU OFF */
-    //P1OUT |= LED;/* led on */
+    P1OUT &= ~LED; /**< Turn off LED (indicating idle state) */
+    or_sr(LPM4_bits); /**< Enter low-power mode until interrupt occurs */
+    P1OUT |= LED; /**< Turn on LED (indicating active state) */
   }
 }
-
-
