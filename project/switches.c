@@ -29,15 +29,15 @@ void switch_interrupt_handler() {
 
   if (switches & SW1) {
     update_heart();
-    buzzer_set_period(1300);
+    buzzer_set_period(2500);
   }
   if (switches & SW2) {
     color_state_advance();
-    buzzer_set_period(900);
+    buzzer_set_period(1000);
   }
   if (switches & SW3) {
     heart_state_advance();
-    buzzer_set_period(700);
+    buzzer_set_period(400);
   }
   if (switches & SW4) {
     // Low-power mode handling moved to interrupt vector

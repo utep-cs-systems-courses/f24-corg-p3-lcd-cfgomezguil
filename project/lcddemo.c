@@ -7,8 +7,6 @@
 #include "switches.h"
 #include "buzzer.h"
 
-volatile unsigned int global_time = 0;
-
 short redrawScreen = 1;
 
 
@@ -24,16 +22,24 @@ void main()
   screen_init();
   buzzer_init();
   
-  enableWDTInterrupts();
+  //oenableWDTInterrupts();
   or_sr(0x08);
   
   while (1) {
-    if(redrawScreen){
+    if (redrawScreen) {
       redrawScreen = 0;
       update_dot();
     }
-    P1OUT &= ~LED; /**< Turn off LED (indicating idle state) */
-    or_sr(LPM4_bits); /**< Enter low-power mode until interrupt occurs */
-    P1OUT |= LED; /**< Turn on LED (indicating active state) */
+    // P1OUT &= ~LED;           /**< Turn off LED (idle state) */
+    //or_sr(LPM4_bits + GIE);  /**< Enter LPM4 with interrupts enabled */
+    // P1OUT |= LED;            /**< Turn on LED (awake state) */
+    redrawScreen = 1;
   }
+}
+
+
+
+void wdt_c_handler() {
+  global_time++;            // Increment global time to track watchdog interrupts
+  redrawScreen = 1;         // Request screen redraw
 }
