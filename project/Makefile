@@ -8,7 +8,7 @@ CC              = msp430-elf-gcc
 AS              = msp430-elf-as
 AR              = msp430-elf-ar
 
-libLcd.a: font-11x16.o font-5x7.o font-8x12.o lcdutils.o lcddraw.o menu.o screen.o switches.o stateMachine.o wdt_handler.o
+libLcd.a: font-11x16.o font-5x7.o font-8x12.o lcdutils.o lcddraw.o menu.o screen.o switches.o stateMachine.o wdt_handler.o buzzer.o
 	$(AR) crs $@ $^
 
 lcddraw.o: lcddraw.c lcddraw.h lcdutils.h
@@ -23,7 +23,10 @@ switches.o: switches.c switches.h
 
 stateMachine.o: stateMachine.c stateMachine.h
 
-wdt_handler.o: wdt_handler.s 
+wdt_handler.o: wdt_handler.s
+
+buzzer.o: buzzer.c buzzer.h
+
 install: libLcd.a
 	mkdir -p ../h ../lib
 	mv $^ ../lib

@@ -1,8 +1,10 @@
 #include <msp430.h>
+#include <libTimer.h>
 #include "switches.h"
 #include "screen.h"
 #include "menu.h"
 #include "stateMachine.h"
+#include "buzzer.h"
 
 int switches = 0;
 
@@ -26,12 +28,20 @@ void switch_interrupt_handler(){
 
   if (switches & SW1) {
     update_heart();
+    buzzer_set_period(1300);
   }
   if (switches & SW2) {
     color_state_advance();
+    buzzer_set_period(900);
   }
   if(switches & SW3) {
     heart_state_advance();
+    buzzer_set_period(700);
+  }
+  if(switches & SW4) {
+    P1OUT &= ~LED;
+    //or_sr(0x10);
+    P1OUT = LED;
   }
 }
 void __interrupt_vec(PORT2_VECTOR) Port_2() {

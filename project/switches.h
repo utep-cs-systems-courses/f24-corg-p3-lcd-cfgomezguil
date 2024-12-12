@@ -9,7 +9,7 @@
 #define SW3 4
 #define SW4 8
 
-#define SWITCHES (SW1 | SW2 | SW3 | SW4) // All Switches
+#define SWITCHES 15 // All Switches
 
 void switch_init();
 void switch_interrupt_handler();

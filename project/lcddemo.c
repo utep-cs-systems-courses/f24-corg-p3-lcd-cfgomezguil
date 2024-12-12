@@ -5,6 +5,7 @@
 #include "menu.h"
 #include "screen.h"
 #include "switches.h"
+#include "buzzer.h"
 
 volatile unsigned int global_time = 0;
 
@@ -22,6 +23,8 @@ void main()
   switch_init();
   menu_init();
   screen_init();
+  buzzer_init();
+  
   //  enableWDTInterrupts();
   or_sr(0x08);
   
